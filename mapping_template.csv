@@ -1,0 +1,4 @@
+parent_company_name,ticker,permno,brand_name,product_line,product_category,source_type,source_ref,confidence_score,is_public_company
+Celsius Holdings,CELH,12345,Celsius,Celsius Energy Drink,snacks,wikidata,https://www.wikidata.org/,0.95,1
+Deckers Outdoor,DECK,67890,UGG,UGG Boots,shoes,wikipedia,https://en.wikipedia.org/wiki/UGG_(brand),0.95,1
+Newell Brands,NWL,24680,Elmer's,Glue,kitchen,wikipedia,https://en.wikipedia.org/wiki/Elmer%27s_Products,0.95,1
