@@ -1,0 +1,100 @@
+{
+  "backend": "ibm_marrakesh",
+  "n": 20,
+  "n_qubits": 8,
+  "reps": 1,
+  "shots": 1024,
+  "circuit": "angle_map_overlap",
+  "batch_sizes": [
+    48,
+    48,
+    48,
+    46
+  ],
+  "spc_probe": 0.5,
+  "total_spent_s": 63.0,
+  "spend_cap_s": 600,
+  "qpu_remaining_s": 1200,
+  "off_diag_mean": 0.11724403782894736,
+  "off_diag_var": 0.014819126948095094,
+  "sample_indices": [
+    1862,
+    7985,
+    7057,
+    5118,
+    879,
+    4305,
+    4256,
+    7833,
+    5607,
+    2110,
+    4333,
+    8436,
+    860,
+    931,
+    9480,
+    6628,
+    8709,
+    6609,
+    4636,
+    3994
+  ],
+  "labels": [
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0
+  ],
+  "usage_log": [
+    {
+      "batch": 0,
+      "batch_size": 48,
+      "job_id": "d9qidcvpemts73cradmg",
+      "usage_s": 16.0,
+      "cumulative_s": 16.0,
+      "wall_s": 30.904554843902588
+    },
+    {
+      "batch": 1,
+      "batch_size": 48,
+      "job_id": "d9qidknpemts73cradu0",
+      "usage_s": 16.0,
+      "cumulative_s": 32.0,
+      "wall_s": 28.370476007461548
+    },
+    {
+      "batch": 2,
+      "batch_size": 48,
+      "job_id": "d9qidropdb6s73e3jt90",
+      "usage_s": 16.0,
+      "cumulative_s": 48.0,
+      "wall_s": 27.107304334640503
+    },
+    {
+      "batch": 3,
+      "batch_size": 46,
+      "job_id": "d9qie2gpdb6s73e3jtg0",
+      "usage_s": 15.0,
+      "cumulative_s": 63.0,
+      "wall_s": 24.301259517669678
+    }
+  ],
+  "session_wall_s": 113.91416335105896,
+  "timestamp": "2026-08-07T00:30:26.827513+00:00"
+}

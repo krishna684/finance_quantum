@@ -1,0 +1,5 @@
+arm,pooled_auc,mean_auc_all,std_auc_all,mean_auc_nolean,std_auc_nolean,runtime_s,n_folds
+classical_rbf_pca8,0.585722,0.586911,0.112828,0.586703,0.110451,0.64,72
+qkernel_pca8 (r=1),0.575846,0.582834,0.107266,0.582858,0.105366,108.0,72
+vqc_pca8 (r=2),0.573847,0.582839,0.118185,0.585895,0.109989,2701.44,72
+classical_rbf_pca50,0.607719,0.604338,0.118982,0.602092,0.119217,0.85,72

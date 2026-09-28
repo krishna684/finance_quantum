@@ -39,7 +39,18 @@ class Storage:
             extracted_brands TEXT,
             extracted_products TEXT,
             extracted_retailers TEXT,
-            extracted_categories TEXT
+            extracted_categories TEXT,
+            sentiment_score REAL,
+            sentiment_label TEXT,
+            cashtag_tickers TEXT,
+            company_names TEXT,
+            mapped_tickers TEXT,
+            views_per_hour REAL,
+            likes_per_hour REAL,
+            comments_per_hour REAL,
+            engagement_per_hour REAL,
+            hours_since_post REAL,
+            velocity_tier TEXT
         );
 
         CREATE TABLE IF NOT EXISTS tiktok_comments (
@@ -54,6 +65,11 @@ class Storage:
             extracted_products TEXT,
             extracted_retailers TEXT,
             extracted_categories TEXT,
+            sentiment_score REAL,
+            sentiment_label TEXT,
+            cashtag_tickers TEXT,
+            company_names TEXT,
+            mapped_tickers TEXT,
             FOREIGN KEY(video_id) REFERENCES tiktok_videos(video_id)
         );
 
@@ -89,6 +105,40 @@ class Storage:
         """
         self.conn.executescript(ddl)
         self.conn.commit()
+        self._migrate_schema()
+
+    def _migrate_schema(self) -> None:
+        """Add columns introduced after initial schema without dropping existing data."""
+        new_video_cols = [
+            ("sentiment_score", "REAL"),
+            ("sentiment_label", "TEXT"),
+            ("cashtag_tickers", "TEXT"),
+            ("company_names", "TEXT"),
+            ("mapped_tickers", "TEXT"),
+            ("views_per_hour", "REAL"),
+            ("likes_per_hour", "REAL"),
+            ("comments_per_hour", "REAL"),
+            ("engagement_per_hour", "REAL"),
+            ("hours_since_post", "REAL"),
+            ("velocity_tier", "TEXT"),
+        ]
+        new_comment_cols = [
+            ("sentiment_score", "REAL"),
+            ("sentiment_label", "TEXT"),
+            ("cashtag_tickers", "TEXT"),
+            ("company_names", "TEXT"),
+            ("mapped_tickers", "TEXT"),
+        ]
+        existing_video = {row[1] for row in self.conn.execute("PRAGMA table_info(tiktok_videos)")}
+        existing_comment = {row[1] for row in self.conn.execute("PRAGMA table_info(tiktok_comments)")}
+
+        for col, col_type in new_video_cols:
+            if col not in existing_video:
+                self.conn.execute(f"ALTER TABLE tiktok_videos ADD COLUMN {col} {col_type}")
+        for col, col_type in new_comment_cols:
+            if col not in existing_comment:
+                self.conn.execute(f"ALTER TABLE tiktok_comments ADD COLUMN {col} {col_type}")
+        self.conn.commit()
 
     def upsert_video(self, payload: dict[str, Any]) -> None:
         sql = """
@@ -96,8 +146,12 @@ class Storage:
             video_id, creator_username, post_datetime_utc, full_transcript, all_hashtags,
             number_of_views, number_of_likes, number_of_shares, total_comments,
             collection_timestamp, signal_type, query_text, engagement_score,
-            extracted_brands, extracted_products, extracted_retailers, extracted_categories
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            extracted_brands, extracted_products, extracted_retailers, extracted_categories,
+            sentiment_score, sentiment_label,
+            cashtag_tickers, company_names, mapped_tickers,
+            views_per_hour, likes_per_hour, comments_per_hour,
+            engagement_per_hour, hours_since_post, velocity_tier
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(video_id) DO UPDATE SET
             creator_username=excluded.creator_username,
             post_datetime_utc=excluded.post_datetime_utc,
@@ -114,7 +168,18 @@ class Storage:
             extracted_brands=excluded.extracted_brands,
             extracted_products=excluded.extracted_products,
             extracted_retailers=excluded.extracted_retailers,
-            extracted_categories=excluded.extracted_categories
+            extracted_categories=excluded.extracted_categories,
+            sentiment_score=excluded.sentiment_score,
+            sentiment_label=excluded.sentiment_label,
+            cashtag_tickers=excluded.cashtag_tickers,
+            company_names=excluded.company_names,
+            mapped_tickers=excluded.mapped_tickers,
+            views_per_hour=excluded.views_per_hour,
+            likes_per_hour=excluded.likes_per_hour,
+            comments_per_hour=excluded.comments_per_hour,
+            engagement_per_hour=excluded.engagement_per_hour,
+            hours_since_post=excluded.hours_since_post,
+            velocity_tier=excluded.velocity_tier
         """
         self.conn.execute(
             sql,
@@ -136,6 +201,17 @@ class Storage:
                 json.dumps(payload.get("extracted_products", []), ensure_ascii=False),
                 json.dumps(payload.get("extracted_retailers", []), ensure_ascii=False),
                 json.dumps(payload.get("extracted_categories", []), ensure_ascii=False),
+                payload.get("sentiment_score"),
+                payload.get("sentiment_label"),
+                json.dumps(payload.get("cashtag_tickers", []), ensure_ascii=False),
+                json.dumps(payload.get("company_names", []), ensure_ascii=False),
+                json.dumps(payload.get("mapped_tickers", []), ensure_ascii=False),
+                payload.get("views_per_hour"),
+                payload.get("likes_per_hour"),
+                payload.get("comments_per_hour"),
+                payload.get("engagement_per_hour"),
+                payload.get("hours_since_post"),
+                payload.get("velocity_tier"),
             ),
         )
 
@@ -144,8 +220,9 @@ class Storage:
         INSERT INTO tiktok_comments (
             comment_id, video_id, comment_text, comment_timestamp, comment_likes,
             reply_indicator, parent_comment_id, extracted_brands, extracted_products,
-            extracted_retailers, extracted_categories
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            extracted_retailers, extracted_categories, sentiment_score, sentiment_label,
+            cashtag_tickers, company_names, mapped_tickers
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(comment_id) DO UPDATE SET
             video_id=excluded.video_id,
             comment_text=excluded.comment_text,
@@ -156,7 +233,12 @@ class Storage:
             extracted_brands=excluded.extracted_brands,
             extracted_products=excluded.extracted_products,
             extracted_retailers=excluded.extracted_retailers,
-            extracted_categories=excluded.extracted_categories
+            extracted_categories=excluded.extracted_categories,
+            sentiment_score=excluded.sentiment_score,
+            sentiment_label=excluded.sentiment_label,
+            cashtag_tickers=excluded.cashtag_tickers,
+            company_names=excluded.company_names,
+            mapped_tickers=excluded.mapped_tickers
         """
         self.conn.execute(
             sql,
@@ -172,6 +254,11 @@ class Storage:
                 json.dumps(payload.get("extracted_products", []), ensure_ascii=False),
                 json.dumps(payload.get("extracted_retailers", []), ensure_ascii=False),
                 json.dumps(payload.get("extracted_categories", []), ensure_ascii=False),
+                payload.get("sentiment_score"),
+                payload.get("sentiment_label"),
+                json.dumps(payload.get("cashtag_tickers", []), ensure_ascii=False),
+                json.dumps(payload.get("company_names", []), ensure_ascii=False),
+                json.dumps(payload.get("mapped_tickers", []), ensure_ascii=False),
             ),
         )
 

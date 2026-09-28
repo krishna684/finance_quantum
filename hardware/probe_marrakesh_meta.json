@@ -1,0 +1,20 @@
+{
+  "backend": "ibm_marrakesh",
+  "job_id": "d9qi721dsedc73afb9sg",
+  "n_probe_circuits": 10,
+  "shots": 1024,
+  "n_qubits": 8,
+  "reps": 1,
+  "isa_depth": 106,
+  "isa_2q_count": 40,
+  "usage_s": 5.0,
+  "wall_s": 9.6,
+  "spc": 0.5,
+  "matrix_est_s": 95.0,
+  "repeat_est_s": 95.0,
+  "spend_cap_s": 600,
+  "spent_s_after_probe": 5.0,
+  "can_do_matrix": true,
+  "can_do_repeat": true,
+  "note": "spot_check line failed on DataBin register name (c vs meas) — QPU job itself completed cleanly; all budget numbers confirmed from printed output"
+}

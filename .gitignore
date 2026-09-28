@@ -1,0 +1,70 @@
+# Credentials — never commit
+.env
+.env.quantum
+
+# Collected raw data — too large and may contain PII
+data/
+
+# SQLite databases
+*.db
+
+# Saved model binaries
+*.joblib
+results/**/*.joblib
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Test and build artifacts
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Experiment tracking
+wandb/
+mlruns/
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Financial TikTok collection — runtime artifacts
+tiktok_fin_*_progress.json
+tiktok_fin_whisper_failed.json
+frames/
+
+# Paper draft (not for public repo)
+paper/
+
+# AI assistant config
+.claude/
+CLAUDE.md
+
+# Tool output / knowledge graph
+graphify-out/
+
+# Compressed archives (source already in repo)
+*.tar.gz
+
+# Debug / scratch scripts
+diagnose3.py
+
+# Internal working notes
+IMPLEMENTATION_ANALYSIS.md
+
+# Worktree state
+.kilo/
+
+# Runtime logs
+logs/
+hardware/logs/
+
+# Superseded docs (moved to docs/)
+README_QUANTUM.md

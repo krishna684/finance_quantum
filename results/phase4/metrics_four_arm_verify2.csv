@@ -1,0 +1,5 @@
+arm,pooled_auc,n_folds
+classical_rbf_pca8,0.585722,72
+qkernel_pca8 (r=1),0.575846,72
+vqc_pca8 (r=2),0.573847,72
+classical_rbf_pca50,0.607719,72
