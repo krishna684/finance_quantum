@@ -178,3 +178,47 @@ Obaid, K., & Pukthuanthong, K. (2022). A picture is worth a thousand words:
 Measuring investor sentiment by combining machine learning and photos from news.
 Journal of Financial Economics.
 ```
+
+---
+
+## Data and Software
+
+The experiments in this repository use the following datasets and models. Please cite them
+appropriately if you use this work.
+
+**N24News** — the core image-article dataset (61,218 NYT articles, 2010–2021):
+```
+Wang, Z., Liu, K., & Tang, B. (2022). N24News: A New Dataset for Multimodal News
+Classification. In Proceedings of the 13th Language Resources and Evaluation Conference
+(LREC 2022). European Language Resources Association.
+```
+
+**CLIP ViT-B/32** — image embeddings (512-dim):
+```
+Radford, A., Kim, J. W., Hallacy, C., Ramesh, A., Goh, G., Agarwal, S., ... & Sutskever, I.
+(2021). Learning Transferable Visual Models From Natural Language Supervision.
+In Proceedings of the 38th International Conference on Machine Learning (ICML 2021).
+```
+
+**FinBERT** — caption sentiment labels (positive / negative / neutral):
+```
+Araci, D. (2019). FinBERT: Financial Sentiment Analysis with Pre-trained Language Models.
+arXiv preprint arXiv:1908.10063.
+
+ProsusAI/finbert. HuggingFace Model Hub.
+https://huggingface.co/ProsusAI/finbert
+```
+
+**Ken French Data Library** — daily Fama-French factors and market return labels:
+```
+French, K. R. Data Library — Fama/French Factors (Daily).
+Tuck School of Business, Dartmouth College.
+https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html
+```
+
+**PennyLane** — quantum circuit simulation:
+```
+Bergholm, V., Izaac, J., Schuld, M., Gogolin, C., Ahmed, S., Ajith, V., ... & Killoran, N.
+(2018). PennyLane: Automatic differentiation of hybrid quantum-classical computations.
+arXiv preprint arXiv:1811.04968.
+```
