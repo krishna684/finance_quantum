@@ -66,5 +66,9 @@ IMPLEMENTATION_ANALYSIS.md
 logs/
 hardware/logs/
 
+# Broken / incomplete results (pending full CRSP data)
+results/portfolio/
+results/report.md
+
 # Superseded docs (moved to docs/)
 README_QUANTUM.md
