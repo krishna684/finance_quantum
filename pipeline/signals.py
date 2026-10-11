@@ -71,6 +71,11 @@ class SignalBuilder:
         self.crsp_ids_csv = Path(crsp_ids_csv)
 
     def _load_crsp(self):
+        raise NotImplementedError(
+            "CRSP data is not available in this pipeline. "
+            "Portfolio economics are descoped. "
+            "Do not call this module."
+        )
         from pipeline.crsp import CRSPMapper
         from pipeline.returns import CRSPReturns
         mapper = CRSPMapper.from_csv(self.crsp_ids_csv)

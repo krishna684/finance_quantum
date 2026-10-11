@@ -107,3 +107,7 @@ python scripts/embed_images.py
 
 These intermediate files are not distributed because they depend on the N24News
 image paths on your local machine.
+
+**Date-source note:** Of the 3,612 records in `methods_label.parquet`, 7 (0.2%) have dates
+derived from image URLs rather than article URLs (field `date_source = "image_url"` in
+`finbert_labeled.parquet`). Excluding these 7 records leaves all reported metrics unchanged.

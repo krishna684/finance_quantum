@@ -1,0 +1,9 @@
+{
+  "comparison": "classical_rbf_pca8_vs_quantum_kernel",
+  "n_folds": 72,
+  "wilcoxon_W": 855.0,
+  "wilcoxon_p": 0.1096,
+  "paired_t": 0.7436,
+  "paired_t_p": 0.4595,
+  "notes": "Two-sided Wilcoxon signed-rank test and paired t-test on per-fold AUC from metrics_per_fold.csv. Both tests non-significant; neither rejects H0 of equal performance."
+}

@@ -173,6 +173,11 @@ class CRSPReturns:
 
         Handles common column name variants from WRDS exports.
         """
+        raise NotImplementedError(
+            "CRSP data is not available in this pipeline. "
+            "Portfolio economics are descoped. "
+            "Do not call this module."
+        )
         records: list[ReturnRecord] = []
         with path.open("r", encoding="utf-8-sig", newline="") as f:
             reader = csv.DictReader(f)
