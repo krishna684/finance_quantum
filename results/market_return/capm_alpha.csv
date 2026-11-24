@@ -1,0 +1,5 @@
+arm,alpha_ann_pct,t_alpha,p_alpha,beta,n_obs,hac_maxlags
+classical_rbf_pca8,10.28,0.426,0.6699,0.098,1508,10
+qkernel_pca8,25.52,1.045,0.2959,-0.0108,1508,10
+vqc_pca8,-37.75,-2.109,0.0349,0.0819,1508,10
+classical_rbf_pca50,-2.13,-0.117,0.907,0.042,1508,10

@@ -24,9 +24,9 @@ Physical question answered:
     noise floor is not adding to the concentration effect.
 
 Usage:
-    python hardware/panel5_analysis.py --gram-path hardware/kernel_matrix_boston_n20.npy
-    python hardware/panel5_analysis.py --gram-path hardware/kernel_matrix_boston_n20.npy \
-        --meta-path hardware/kernel_matrix_boston_n20_meta.json
+    python hardware/panel5_analysis.py --gram-path hardware/kernel_matrix_marrakesh_n20.npy
+    python hardware/panel5_analysis.py --gram-path hardware/kernel_matrix_marrakesh_n20.npy \
+        --meta-path hardware/kernel_matrix_marrakesh_n20_meta.json
 """
 from __future__ import annotations
 

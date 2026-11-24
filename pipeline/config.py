@@ -1,3 +1,5 @@
+
+
 from __future__ import annotations
 
 import os
@@ -10,6 +12,9 @@ from dotenv import load_dotenv
 @dataclass(frozen=True)
 class Settings:
     client_key: str
+
+
+    
     client_secret: str
     access_token: str
     db_path: Path

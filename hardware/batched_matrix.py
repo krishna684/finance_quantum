@@ -24,8 +24,8 @@ Usage (Phase 3 — only after explicit GO):
     python hardware/batched_matrix.py --spc <measured_spc>
 
 Output:
-    hardware/kernel_matrix_boston_n20.npy        20×20 float64 Gram matrix
-    hardware/kernel_matrix_boston_n20_meta.json  per-batch usage log + metadata
+    hardware/kernel_matrix_marrakesh_n20.npy        20×20 float64 Gram matrix
+    hardware/kernel_matrix_marrakesh_n20_meta.json  per-batch usage log + metadata
 """
 from __future__ import annotations
 
@@ -445,8 +445,8 @@ def main() -> None:
     print()
 
     # ── save ────────────────────────────────────────────────────────────────
-    out_npy  = _HW_DIR / "kernel_matrix_boston_n20.npy"
-    out_json = _HW_DIR / "kernel_matrix_boston_n20_meta.json"
+    out_npy  = _HW_DIR / "kernel_matrix_marrakesh_n20.npy"
+    out_json = _HW_DIR / "kernel_matrix_marrakesh_n20_meta.json"
     np.save(out_npy, K)
 
     meta = {

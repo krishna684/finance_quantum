@@ -1,0 +1,5 @@
+arm,sharpe_annualized,mean_ret_bps,n_days
+classical_rbf_pca8,-0.0017,-0.01,1511
+classical_rbf_pca50,0.1459,1.06,1511
+qkernel_pca8,0.1492,1.08,1511
+vqc_pca8,-0.7906,-5.72,1511

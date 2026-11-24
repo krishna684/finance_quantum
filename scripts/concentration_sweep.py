@@ -14,9 +14,9 @@ PART 1 (runs always, no labels needed):
     results/concentration_sweep/heatmap_off_diag_var.png
     results/concentration_sweep/heatmap_conc_ratio.png
 
-PART 2 (requires data/labeled_sentiment.parquet):
+PART 2 (requires data/methods_label.parquet):
   For each grid point: quantum-kernel SVM (precomputed) + classical RBF-SVM
-  under expanding walk-forward CV on label_sent; report AUC mean / std.
+  under expanding walk-forward CV on finbert_bin; report AUC mean / std.
   FAIL LOUDLY on NaN AUC or unrecoverable single-class folds.
 
   Outputs:
@@ -217,12 +217,15 @@ def run_part2(
     print("\n=== PART 2: AUC vs CONCENTRATION ===")
 
     # Align subset with labeled_sentiment
-    if "label_sent" not in labeled_sent.columns:
+    # Accept either the legacy column name or the canonical one
+    label_col = "finbert_bin" if "finbert_bin" in labeled_sent.columns else "label_sent"
+    if label_col not in labeled_sent.columns:
         raise RuntimeError(
-            "FAIL: labeled_sentiment.parquet missing column 'label_sent'"
+            "FAIL: methods_label.parquet missing expected column "
+            "'finbert_bin' (or 'label_sent' for legacy files)"
         )
     sub      = labeled_sent.iloc[subset_idx].copy().reset_index(drop=True)
-    y_sub    = sub["label_sent"].values
+    y_sub    = sub[label_col].values
     # Sort subset by date for expanding window
     order    = np.argsort(sub["date"].values)
     sub_ord  = sub.iloc[order].reset_index(drop=True)
@@ -418,10 +421,12 @@ def main() -> None:
     print("\n=== PART 1 COMPLETE ===")
 
     # ---- PART 2 (conditional) ----
-    sent_path = _ROOT / "data" / "labeled_sentiment.parquet"
+    # Canonical source: data/methods_label.parquet (3,612 rows, finbert_bin column)
+    # Produced by: scripts/build_methods_label.py
+    sent_path = _ROOT / "data" / "methods_label.parquet"
     if not sent_path.exists():
         print(f"\nPART 2 SKIPPED: {sent_path} does not exist.")
-        print("Re-run this script after data/labeled_sentiment.parquet is available.")
+        print("Run scripts/build_finbert_labels.py then scripts/build_methods_label.py first.")
         return
 
     labeled_sent = pd.read_parquet(sent_path)

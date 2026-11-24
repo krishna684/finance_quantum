@@ -1,75 +1,84 @@
 # Hardware Quantum Runs
 
-This directory contains scripts and results from running quantum kernel circuits
-on real IBM quantum hardware via IBM Quantum (formerly IBM Q Experience).
+This directory contains the kernel matrices, metadata, and scripts from running
+the quantum kernel circuit on IBM quantum processors. The hardware results appear
+in Table 4 of the paper.
 
 ---
 
-## What is here
+## Kernel matrices (paper Table 4)
+
+| File | Backend | QPU-s | Off-diag mean | Off-diag var |
+|------|---------|-------|---------------|--------------|
+| `kernel_matrix_marrakesh_n20.npy` | ibm\_marrakesh | 63 | 0.117 | 0.0148 |
+| `kernel_matrix_marrakesh_n20_meta.json` | ibm\_marrakesh | — | metadata | — |
+| `kernel_matrix_run2_n20.npy` | ibm\_fez | 65 | 0.109 | 0.0126 |
+| `kernel_matrix_run2_n20_meta.json` | ibm\_fez | — | metadata | — |
+| `kernel_matrix_sim_n20_reps1.npy` | Simulator, 1 rep | — | 0.162 | 0.033 |
+| `kernel_matrix_sim_n20_reps2.npy` | Simulator, 2 reps | — | 0.111 | 0.017 |
+| `kernel_matrix_sim_n20_reps3.npy` | Simulator, 3 reps | — | 0.005 | 2.8e-5 |
+
+All matrices are 20×20, computed on the same 20 photos (seed=42, indices stored in
+each `_meta.json`). Circuit: angle-map overlap, 8 qubits, 1 repetition, 1024 shots.
+ISA depth 106, 40 two-qubit gates (after transpilation to device topology).
+
+**Probe and exploratory files**
 
 | File | Description |
 |------|-------------|
-| `kernel_matrix_ibm_miami.npy` | 20×20 kernel matrix computed on `ibm_miami` |
-| `kernel_matrix_ibm_miami_meta.json` | Job metadata: backend, shots, feature map, timing |
-| `kernel_matrix_boston_n20.npy` | 20×20 kernel matrix from earlier Boston backend run |
-| `kernel_matrix_boston_n20_meta.json` | Job metadata |
-| `kernel_matrix_run2_n20.npy` | Second independent run (reproducibility check) |
-| `kernel_matrix_run2_n20_meta.json` | Job metadata |
-| `probe_marrakesh_meta.json` | Probe run on `ibm_marrakesh`: ISA depth, 2Q gate count, budget |
-| `kernel_matrix.py` | Computes a fidelity kernel matrix on hardware via Qiskit |
-| `batched_matrix.py` | Batched version for larger sample sets within shot budget |
-| `inventory.py` | Lists available backends and their qubit counts / queue depths |
-| `queue_check.py` | Monitors job status in the IBM Quantum queue |
-| `smoke_bell.py` | Bell-state smoke test — verifies hardware connectivity |
-| `transpile_check.py` | Transpiles the feature map circuit and reports ISA depth / 2Q count |
-| `aer_dryrun.py` | Aer simulator dry run — validates circuits before submitting to hardware |
-| `phase_f_run2.py` | Main Phase F hardware run script |
-| `phase_f_diagnostics.py` | Diagnostics for hardware run results |
-| `panel5_analysis.py` | Analysis comparing hardware vs simulator kernel matrices |
-| `probe_marrakesh.py` | Probe script for `ibm_marrakesh` — estimates cost before full run |
+| `probe_marrakesh_meta.json` | Pre-run probe on ibm\_marrakesh: ISA depth, 2Q gate count, budget estimate |
+| `kernel_matrix_ibm_miami.npy` | Exploratory 2-qubit run on ibm\_miami (128 shots) — not in paper |
+| `kernel_matrix_ibm_miami_meta.json` | Metadata for ibm\_miami run |
 
 ---
 
-## Hardware used
+## Scripts
 
-| Backend | Qubits | Run date | Purpose |
-|---------|--------|----------|---------|
-| `ibm_miami` | 2 (feature_dim=2) | 2026-07-27 | Kernel matrix (20 samples, 128 shots) |
-| `ibm_marrakesh` | 8 | 2026-07 | Budget probe (8 qubits, reps=1, 1024 shots) |
+| File | Description |
+|------|-------------|
+| `batched_matrix.py` | Submits angle-map overlap circuits in batches; produces the paper kernel matrices |
+| `kernel_matrix.py` | Single-batch kernel matrix computation (earlier version) |
+| `panel5_analysis.py` | Compares hardware and simulator matrices; computes bootstrap CIs |
+| `aer_dryrun.py` | Validates circuits on the Aer simulator before hardware submission |
+| `transpile_check.py` | Transpiles the feature map circuit and reports ISA depth and 2Q gate count |
+| `probe_marrakesh.py` | Probe run to estimate QPU cost before committing to the full matrix |
+| `phase_f_run2.py` | Script used for the ibm\_fez (run 2) submission |
+| `phase_f_diagnostics.py` | Post-run diagnostics |
+| `smoke_bell.py` | Bell-state smoke test to verify hardware connectivity |
+| `queue_check.py` | Monitors IBM Quantum job status |
+| `inventory.py` | Lists available backends and queue depths |
 
 ---
 
-## Key results
+## Hardware runs
 
-**ibm_miami kernel matrix (20 samples, ZZFeatureMap, reps=2, 128 shots):**
-- Off-diagonal mean: 0.347
-- Concentration ratio: 0.357
-- Wall clock: 691 s; quantum time: 110 s
+| Backend | Run date | QPU-s | Purpose |
+|---------|----------|-------|---------|
+| ibm\_marrakesh | 2026-08-07 | 63 | Full kernel matrix, 20 photos — paper Table 4 |
+| ibm\_fez | 2026-08-08 | 65 | Same circuit, same photos, one day later — paper Table 4 |
 
-**ibm_marrakesh probe (8 qubits, reps=1):**
-- ISA circuit depth: 106; 2Q gates: 40
-- Estimated full matrix cost: ~95 s quantum time (within 600 s budget)
+Both processors: Heron r2, 8 qubits used, 2Q gate error ~2.8×10⁻³.
+Total QPU time: 128 s (63 + 65). IBM list price for Heron r2: $1.60/QPU-s.
 
 ---
 
 ## Reproducing hardware runs
 
-Requires an IBM Quantum account with access to the relevant backend.
+Requires an IBM Quantum account with access to a Heron r2 processor.
 
 ```bash
-# Install Qiskit
 pip install qiskit qiskit-ibm-runtime
 
-# Set credentials
-export IBMQ_TOKEN=<your_token>
-
-# Dry run on Aer simulator first
+# Validate circuit locally first
 python hardware/aer_dryrun.py
 
-# Submit to hardware
+# Estimate cost before submitting
+python hardware/probe_marrakesh.py
+
+# Submit to hardware (ibm_fez or current equivalent)
 python hardware/phase_f_run2.py
 ```
 
-> Note: IBM Quantum backend names and availability change over time. The `ibm_miami`
-> and `ibm_marrakesh` backends were available at time of submission. Use
-> `hardware/inventory.py` to list currently available backends.
+IBM Quantum backend names change as processors are retired. Use
+`hardware/inventory.py` to list currently available backends. The circuit
+parameters (8 qubits, reps=1, angle encoding) are set in `batched_matrix.py`.

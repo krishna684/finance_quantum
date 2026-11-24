@@ -152,11 +152,16 @@ Evaluation
 
 ## Data Sources
 
+**Quantum paper (N24News analysis):**
+- **N24News** — 10,206 business-section articles with photos and captions (publicly available)
+- **Kenneth French Data Library** — daily Fama-French factors and market excess returns
+- **CBOE/FRED** — daily VIX (FRED series VIXCLS)
+
+**Full pipeline (broader research program):**
 - **Wall Street Journal / New York Times** — institutional media, via MU Library TDM license
-- **TikTok Research API** — retail consumer demand signals (purchase intent + negative sentiment)
+- **TikTok Research API** — retail consumer demand signals
 - **CRSP** — daily stock returns, PERMNO identifiers
 - **Compustat** — firm fundamentals, segment data
-- **Kenneth French Data Library** — Fama-French factors
 
 See [docs/data_collection_protocol.md](docs/data_collection_protocol.md) for the full protocol.
 
@@ -171,7 +176,14 @@ configuration reference, and the kernel concentration analysis.
 
 ## Citation
 
-If you use this code or data pipeline, please cite:
+If you use this code or the results from the quantum paper, please cite:
+
+```
+Karra, K. R., & Pukthuanthong, K. (2026). Quantum Machine Learning and Financial
+News Photos: Same Accuracy, Higher Cost. Submitted to Financial Analysts Journal.
+```
+
+This repository also builds on the following work:
 
 ```
 Obaid, K., & Pukthuanthong, K. (2022). A picture is worth a thousand words:

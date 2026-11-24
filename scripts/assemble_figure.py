@@ -62,8 +62,8 @@ def _load_concentration_sweep() -> pd.DataFrame:
 
 
 def _load_gram() -> tuple[np.ndarray, dict]:
-    K    = np.load(_HW_DIR / "kernel_matrix_boston_n20.npy")
-    with open(_HW_DIR / "kernel_matrix_boston_n20_meta.json", encoding="utf-8") as f:
+    K    = np.load(_HW_DIR / "kernel_matrix_marrakesh_n20.npy")
+    with open(_HW_DIR / "kernel_matrix_marrakesh_n20_meta.json", encoding="utf-8") as f:
         meta = json.load(f)
     return K, meta
 
